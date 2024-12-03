@@ -1,0 +1,12 @@
+#mcq-answer-finder-container {
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	z-index: 10000; /* Ensure it appears above other elements */
+	width: 300px;
+	background: white;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	border-radius: 8px;
+	overflow: hidden;
+	font-family: Arial, sans-serif;
+}
