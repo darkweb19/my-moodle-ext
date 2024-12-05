@@ -9,7 +9,7 @@ const context = (() => {
     return Function("return this")();
   }
 })();
-const defines = {};
+const defines = {"process.env.GEMINI_API_KEY": undefined};
 Object.keys(defines).forEach((key) => {
   const segments = key.split(".");
   let target = context;

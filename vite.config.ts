@@ -5,4 +5,9 @@ import manifest from "./manifest.json";
 
 export default defineConfig({
 	plugins: [react(), crx({ manifest })],
+	define: {
+		"process.env.GEMINI_API_KEY": JSON.stringify(
+			process.env.GEMINI_API_KEY
+		),
+	},
 });
