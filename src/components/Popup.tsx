@@ -22,9 +22,12 @@ const Popup = () => {
 					const base64Image = reader.result as string;
 					const conciseAnswer = await queryGeminiLLM(
 						base64Image,
-						true
+						true,
+						(streamedText) => {
+							setAnswer(streamedText);
+						}
 					);
-					setAnswer(conciseAnswer);
+
 					console.log("Gemini Answer:", conciseAnswer);
 				} catch (err) {
 					console.error("Error getting answer from Gemini:", err);
