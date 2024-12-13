@@ -2,11 +2,17 @@ import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { queryGeminiLLM } from "../../utils/gemini";
 import "../App.css";
+import { takeScreenshot } from "../../utils/screenshot";
 
 const Popup = () => {
 	const [answer, setAnswer] = useState("");
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState<boolean>(false);
 	const [preview, setPreview] = useState<string | null>(null);
+	console.log(preview);
+
+	const handleTakeScreenshot = () => {
+		takeScreenshot(setPreview, setLoading, setAnswer);
+	};
 
 	const onDrop = useCallback(async (acceptedFiles: any) => {
 		const file = acceptedFiles[0];
@@ -20,15 +26,10 @@ const Popup = () => {
 			reader.onload = async () => {
 				try {
 					const base64Image = reader.result as string;
-					const conciseAnswer = await queryGeminiLLM(
-						base64Image,
-						true,
-						(streamedText) => {
-							setAnswer(streamedText);
-						}
-					);
-
-					console.log("Gemini Answer:", conciseAnswer);
+					await queryGeminiLLM(base64Image, true, (streamedText) => {
+						setAnswer(streamedText);
+					});
+					// console.log("Gemini Answer:", conciseAnswer);
 				} catch (err) {
 					console.error("Error getting answer from Gemini:", err);
 					setAnswer("Error getting answer. Please try again.");
@@ -63,6 +64,12 @@ const Popup = () => {
 						: "Drag 'n' drop an image here, or click to select"}
 				</p>
 			</div>
+			<button
+				onClick={handleTakeScreenshot}
+				className="screenshot-button"
+			>
+				Take Screenshot
+			</button>
 
 			{preview && (
 				<div className="preview-container">
